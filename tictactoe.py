@@ -4,41 +4,45 @@ class TicTacToe:
     
     def __init__(self):
         self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        self.player1 = None
-        self.player2 = None
-        self.crntPlayer = None
         self.players = ['X', 'Y']
-        self.iswinner = None
-    
-    def defPlayer(self):
-        self.player1 = raw_input('X or Y? ')
-        if 'x' in self.player1.lower():
-            self.player2 = 'Y'
-            self.player1 = 'X'
-        else:
-            self.player2 = 'X'
-            self.player1 = 'Y'
-        self.crntPlayer = self.player1
+        self.end = False
     
     def reset(self):
-        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9] 
+        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.defPlayer()
+    
+    def defPlayer(self):
+        self.player1 = raw_input('X or Y? ').upper()
+        if self.player1 in self.players:
+            if 'X' in self.player1:
+                self.player2 = 'Y'
+                self.player1 = 'X'
+            else:
+                self.player2 = 'X'
+                self.player1 = 'Y'
+            self.crntPlayer = self.player1
+        else:
+            print 'Please enter X or Y'
+            self.defPlayer()
     
     def doMoves(self):
         try:
             self.printBoard()
             self.move = raw_input(self.crntPlayer + ', Where do you want to go? (1-9): ')
-            if isinstance(int(self.move), int) == False:
-                print '[ERROR] Please select a number!'
+            if isinstance(int(self.move), int) == False: print '[ERROR] Please select a number!'
             else:
-                self.board[int(self.move) - 1] = self.crntPlayer
-                self.checkWin()
-                if self.crntPlayer == self.player1:
-                    self.crntPlayer = self.player2
+                if int(self.move) > 0 and int(self.move) <= 9:
+                    if isinstance(self.board[int(self.move) - 1], int):
+                        self.board[int(self.move) - 1] = self.crntPlayer
+                        self.checkWin()
+                        if self.crntPlayer == self.player1: self.crntPlayer = self.player2
+                        else: self.crntPlayer = self.player1
+                    else:
+                        print 'Tile has been taken, try another!'
                 else:
-                    self.crntPlayer = self.player1
-        except Exception as e:
-            print e
+                    print 'Please select a number on the board!'
+        except:
+            print '[ERROR] Incorrect input, please try again!'
     
     def checkRow(self, move1, move2, move3):
         for i in self.players:
@@ -49,31 +53,21 @@ class TicTacToe:
     def winner(self):
         if isinstance(self.iswinner, str):
             self.printBoard()
-            print 'Player ' + self.crntPlayer + ' wins!'
+            print 'Player ' + self.iswinner + ' wins!'
             result = raw_input('Play again? (Y or N): ')
             if result.lower() == 'y':
                 self.reset()
             else:
-                print 'Thanks for playing!'
-                sys.exit()
+                if result.lower() == 'n':
+                    self.end = True
+                    print 'Thanks for playing!'
+                
     
     def checkWin(self):
-        if self.checkRow(1, 2, 3):
-            self.winner()
-        if self.checkRow(4, 5, 6):
-            self.winner()
-        if self.checkRow(7, 8, 9):
-            self.winner()
-        if self.checkRow(1, 4, 7):
-            self.winner()
-        if self.checkRow(1, 5, 9):
-            self.winner()
-        if self.checkRow(2, 5, 8):
-            self.winner()
-        if self.checkRow(3, 6, 9):
-            self.winner()
-        if self.checkRow(3, 5, 6):
-            self.winner()
+        win_rows = ['1,2,3', '4,5,6', '7,8,9', '1,4,7', '1,5,9', '2,5,8', '3,6,9', '3,5,6', '7,5,3']
+        for i in win_rows:
+            x = i.split(',')
+            if self.checkRow(int(x[0]), int(x[1]), int(x[2])): self.winner()
         
     def printBoard(self):
         print '|', self.board[0], '|', self.board[1], '|', self.board[2], '|'
@@ -85,4 +79,7 @@ class TicTacToe:
 game = TicTacToe()
 game.defPlayer()
 while True:
+    if game.end == True:
+        break
     game.doMoves()
+    
