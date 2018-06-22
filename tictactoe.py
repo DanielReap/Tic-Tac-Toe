@@ -61,7 +61,6 @@ class TicTacToe:
                 if result.lower() == 'n':
                     self.end = True
                     print 'Thanks for playing!'
-                
     
     def checkWin(self):
         win_rows = ['1,2,3', '4,5,6', '7,8,9', '1,4,7', '1,5,9', '2,5,8', '3,6,9', '3,5,6', '7,5,3']
