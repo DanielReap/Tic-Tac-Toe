@@ -81,4 +81,3 @@ while True:
     if game.end == True:
         break
     game.doMoves()
-    
