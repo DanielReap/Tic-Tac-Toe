@@ -45,10 +45,10 @@ class TicTacToe:
             print '[ERROR] Incorrect input, please try again!'
     
     def checkRow(self, move1, move2, move3):
-        for i in self.players:
-            if self.board[int(move1) - 1] == i and self.board[int(move2) - 1] == i and self.board[int(move3) - 1] == i:
-                self.iswinner = self.crntPlayer
-                return True
+        moves = [self.board[int(move1) - 1], self.board[int(move2) - 1], self.board[int(move3) - 1]]
+        if len(set(moves)) == 1:
+            self.iswinner = self.crntPlayer
+            return True
     
     def winner(self):
         if isinstance(self.iswinner, str):
