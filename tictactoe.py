@@ -54,11 +54,11 @@ class TicTacToe:
         if isinstance(self.iswinner, str):
             self.printBoard()
             print 'Player ' + self.iswinner + ' wins!'
-            result = raw_input('Play again? (Y or N): ')
-            if result.lower() == 'y':
+            result = raw_input('Play again? (Y or N): ').lower()
+            if result == 'y':
                 self.reset()
             else:
-                if result.lower() == 'n':
+                if result == 'n':
                     self.end = True
                     print 'Thanks for playing!'
     
